@@ -17,7 +17,7 @@ The only methods that should be used to input data are insert and connect. Getti
 system.insert('Bob');
 // system now contains one cluster with one atom, we can get the cluster using the value we passed in:
 var myCluster = system.getCLuster('Bob');
-myCluster.id = 0;
+myCluster.id //=> 0;
 myCluster.getAtom('Bob') //=> Atom: { value: 'Bob', connections: [] }
 
 // if we insert another value, we get another atomic cluster
@@ -37,6 +37,7 @@ system.connect('John', 'Mary');
 var cluster = system.getCluster('Bob');
 cluster.isAtomic() //=> false
 cluster.getAtom('Mary') //=> Atom: {value: 'Mary', connections: []}
+cluster.atoms.length //=> 3
 system.clusters.length //=> 1
 
 // subsequent atomic clusters will not be merge in unless they are connected to
