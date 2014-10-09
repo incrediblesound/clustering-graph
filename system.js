@@ -60,10 +60,13 @@ System.prototype.insert = function(value, connections){
   if(connections === undefined){
     this.newCluster(value);
   }
+  else if(!Array.isArray(connections)){
+    this.newCluster(value);
+    this.newCluster(connections);
+    this.connect(value, connections);
+    return;
+  }
   else {
-      if(!Array.isArray(connections)){
-        connections = [connections];
-      }
       var clusterConnections = [];
       var atomicClusters = [];
       var items = [];
@@ -168,6 +171,9 @@ System.prototype.connect = function(source, target){
   var targetCluster = this.getCluster(target);
   var sourceAtom = sourceCluster.getAtom(source);
   var targetAtom = targetCluster.getAtom(target);
+  if(sourceCluster.atomHasEdgeTo(sourceAtom, targetAtom)){
+    return;
+  }
   sourceAtom.addConnection(new Edge(target, targetCluster.id));
   targetAtom.addConnection(new Edge(source, sourceCluster.id));
   this.checkForMerge(sourceCluster, targetCluster);
@@ -184,19 +190,66 @@ Cluster.prototype.getAtom = function(value){
     if(this.atoms[a].value === value){
       return this.atoms[a];
     }
-  }
+  };
+};
+
+Cluster.prototype.atomHasEdgeTo = function(atomA, atomB){
+  var result = false;
+  var self = this;
+  forEach(atomB.connections, function(edge){
+    if(edge.id === self.id && edge.value === atomA.value){
+      result === true;
+    }
+  })
+  return result;
 }
 
 Cluster.prototype.addAtom = function(atom){
   this.atoms.push(atom);
   this.index[atom.value] = true;
-}
+};
 
 Cluster.prototype.isAtomic = function(){
   return (this.atoms.length === 1);
-}
+};
+
+System.prototype.sharesAtomicWith = function(clusterA, clusterB){
+  var self = this;
+  var atomA = clusterA.atoms[0];
+  var atomics = [];
+  var atomB = clusterB.atoms[0];
+  var result;
+  forEach(atomA.connections, function(edge){
+    var cluster = self.findCluster(edge.id);
+    if(cluster.isAtomic()){
+      atomics.push(cluster);
+    }
+  })
+  if(atomics.length){
+    forEach(atomB.connections, function(edge){
+      forEach(atomics, function(atomicCluster){
+        if(edge.id === atomicCluster.id){
+          result = atomicCluster;
+        }
+      });
+    });
+    return result;
+  };
+};
 
 System.prototype.checkForMerge = function(clusterA, clusterB){
+  var triad;
+  if(clusterA.isAtomic() && clusterB.isAtomic()){
+    if(clusterA.atoms[0].connections.length === 1 || clusterB.atoms[0].connections.length === 1){
+      return;
+    } else {
+      var third = this.sharesAtomicWith(clusterA, clusterB);
+      if(third !== undefined){
+        this.mergeTriad(clusterA, clusterB, third);
+        return;
+      }
+    }
+  }
   var thoseAtoms = atomNames(clusterB.atoms);
   var merge = true;
   forEach(clusterA.atoms, function(atom){
@@ -206,7 +259,7 @@ System.prototype.checkForMerge = function(clusterA, clusterB){
   if(merge){
     this.mergeClusters(clusterA, clusterB);
   }
-}
+};
 
 System.prototype.mergeClusters = function(clA, clB){
   var location = this.findCluster(clB.id);
@@ -229,9 +282,23 @@ System.prototype.mergeClusters = function(clA, clB){
     })
     clA.addAtom(atom);
   })
-}
+  return clA;
+};
+
+System.prototype.mergeTriad = function(one, two, three){
+  var indices = [one.id, two.id, three.id];
+  one = this.mergeClusters(one, two);
+  one = this.mergeClusters(one, three);
+  forEach(one.atoms, function(atom){
+    forEach(atom.connections, function(edge, i){
+      if(indices.indexOf(edge.id) !== -1){
+        atom.connections.splice(i, 1);
+      }
+    });
+  });
+};
 
 
 Atom.prototype.addConnection = function(connection){
   this.connections.push(connection);
-}
+};
