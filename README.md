@@ -1,8 +1,8 @@
 Clustering Graph
 ================
-Clustering graph is a data structure similar to a normal graph data structure with that difference that it automatically manages a kind of object called the cluster. In a typical graph the fundamental unit is the node, or vertex, and a cluster would simply be a subset of nodes where every node was connected to every other node in the subset. 
+Clustering graph is similar to a normal graph data structure but it automatically manages highly clustered nodes. In a typical graph the fundamental unit is the node or vertex, and a cluster would simply be a subset of nodes where every node was connected to every other node in the subset. 
 
-The clustering graph is defined by a space, which I call a system, that contains cluster objects which are arrays of atoms that are understood to be mutually interconnected. You can add atoms into the system and connect atoms already in the system and the system will automatically manage the clusters. Unconnected atoms in the system are stored in a cluster of one atom called an atomic cluster.
+The clustering graph is defined by a space, which I call a system, that contains cluster objects which are arrays of atoms that are by definition mutually interconnected. You can add atoms into the system and connect atoms already in the system and the system will automatically manage clusters. Unconnected atoms in the system are stored in a cluster of one atom called an atomic cluster. Finding highly connected clusters is as trivial for the cluster graph as getting all the nodes in a regular graph.
 
 Methods
 -------
