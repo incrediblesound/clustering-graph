@@ -67,9 +67,13 @@ System.prototype.insert = function(value, connections){
     return;
   }
   else {
-      var clusterConnections = [];
-      var atomicClusters = [];
-      var items = [];
+    if(connections.length === 1){
+      var connection = connections.pop();
+      return this.insert(value, connection);
+    }
+    var clusterConnections = [];
+    var atomicClusters = [];
+    var items = [];
     for(var i = 0; i < connections.length; i++){
       var current = connections[i];
       var location = this.getCluster(current);
