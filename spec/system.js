@@ -30,5 +30,12 @@ describe('system()', function () {
     expect(sys.getCluster('Mary').atoms.length).to.equal(4);
   });
 
-  // Add more assertions here
+  it('registers multiple clusters for a single atom', function () {
+    sys.insert('James', ['Phillip','Ryan']);
+    sys.insert('Bob', ['Dave','Mary']);
+    sys.connect('Bob', 'James');
+    sys.connect('Bob', 'Phillip');
+    sys.connect('Bob', 'Ryan');
+    expect(sys.getCluster('Bob').length).to.equal(2);
+  })
 });

@@ -99,21 +99,13 @@ System.prototype.insert = function(value, connections){
 };
 
 System.prototype.getCluster = function(value){ //get cluster via value of an atom
-  var results = [];
+  var target;
   forEach(this.clusters, function(cluster){
     if(cluster.index[value] !== undefined){
-      results.push(cluster);
+      target = cluster;
     };
   })
-  if(results.length === 1){
-    return results.pop();
-  }
-  else if(results.length === 0){
-    return;
-  } 
-  else {
-    return results;
-  }
+  return target;
 };
 
 System.prototype.findCluster = function(id){
@@ -168,14 +160,7 @@ System.prototype.connect = function(source, target){
   }
   sourceAtom.addConnection(new Edge(target, targetCluster.id));
   targetAtom.addConnection(new Edge(source, sourceCluster.id));
-  if(!this.checkForMerge(sourceCluster, targetCluster)){
-    if(!targetCluster.isAtomic()){
-      this.checkForOverlap(sourceAtom, targetCluster);
-    }
-    if(!sourceCluster.isAtomic()){
-      this.checkForOverlap(targetAtom, sourceCluster);
-    }
-  };
+  this.checkForMerge(sourceCluster, targetCluster);
 }
 
 System.prototype.sharesAtomicWith = function(clusterA, clusterB){
@@ -206,14 +191,12 @@ System.prototype.checkForMerge = function(clusterA, clusterB){
   var triad;
   if(clusterA.isAtomic() && clusterB.isAtomic()){
     if(clusterA.atoms[0].connections.length === 1 || clusterB.atoms[0].connections.length === 1){
-      return false;
+      return;
     } else {
       var third = this.sharesAtomicWith(clusterA, clusterB);
       if(third !== undefined){
         this.mergeTriad(clusterA, clusterB, third);
-        return true;
-      } else {
-        return false;
+        return;
       }
     }
   }
@@ -224,9 +207,7 @@ System.prototype.checkForMerge = function(clusterA, clusterB){
     merge = merge && isSubsetOf(atomEdges, thoseAtoms);
   })
   if(merge){
-    return this.mergeClusters(clusterA, clusterB);
-  } else {
-    return false;
+    this.mergeClusters(clusterA, clusterB);
   }
 };
 
@@ -253,14 +234,6 @@ System.prototype.mergeClusters = function(clA, clB){
   })
   return clA;
 };
-
-System.prototype.checkForOverlap = function(atom, cluster){
-  var clusterMembers = atomNames(cluster.atoms);
-  var edges = atomNames(atom.connections);
-  if(isSubsetOf(edges, clusterMembers)){
-    cluster.insertAtom(atom);
-  }
-}
 
 System.prototype.mergeTriad = function(one, two, three){
   var indices = [one.id, two.id, three.id];
