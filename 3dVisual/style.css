@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  font: 11px courier;
+  overflow: hidden;
+}
+
+#graph-info {
+  position: absolute;
+  top: 0px;
+  left: 40%;
+  margin: 10px;
+  background-color: #ffffe0;
+  color: #333;
+  padding: 5px 10px;
+}
+#options {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}

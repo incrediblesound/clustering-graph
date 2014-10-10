@@ -1,0 +1,67 @@
+<!--
+  This is an example html file with some options added. The minimum html file for
+  the graph visualization is:
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Graph Visualization</title>
+      <script type="text/javascript" src="build/graph.min.js"></script>
+    </head>
+    <body onload="new Drawing.SimpleGraph({layout: '3d', showStats: true, showInfo: true})">
+    </bod>
+  </html>
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Graph Visualization</title>
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="webgl-frameworks/three.min.js"></script>
+    <script type="text/javascript" src="utils/Stats.js"></script>
+    <script type="text/javascript" src="utils/TrackballControls.js"></script>
+    <script type="text/javascript" src="utils/Label.js"></script>
+    <script type="text/javascript" src="utils/ObjectSelection.js"></script>
+    <script type="text/javascript" src="layouts/force-directed-layout.js"></script>
+    <script type="text/javascript" src="drawings/simple_graph.js"></script>
+    <script src="lib/helvetiker_bold.typeface.js"></script>
+    <script type="text/javascript" src="lib/system.js"></script>
+    <script type="text/javascript" src="lib/cluster.js"></script>
+    <script type="text/javascript" src="lib/atom.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <style type="text/css">
+      
+    </style>
+  </head>
+  <body onload="createDrawing()">
+    <div id="options">
+      <label>Insert Value<input type="text" name="input" id="field"></label>
+      <button id="input">Insert</button>
+      <label>Connect Values<input type="text" name="input" id="two"></label>
+      <button id="connect">Connect</button>
+      <div class="atoms"></div>
+    </div>
+
+    <div style="position: absolute; bottom: 0;">
+      Rotate: Left Mouse Button and Move<br />
+      Zoom: Press Key S + Left Mouse Button and Move<br />
+      Drag: Press Key D + Left Mouse Button and Move
+    </div>
+    <script type="text/javascript">
+      var drawing;
+      function createDrawing() {
+      drawing = new Drawing.SimpleGraph({layout: '3d', selection: true, numNodes: 50, showStats: true, showInfo: false});
+      }
+      $('#input').on('click', function(){
+        var data = $('#field').val();
+        drawing.insert(data);
+      })
+      $('#connect').on('click', function(){
+        var data = $('#two').val();
+        drawing.connect(data);
+      })
+
+    </script>
+  </body>
+</html>
