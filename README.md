@@ -45,7 +45,7 @@ system.clusters.length //=> 1
 ```
 3D Visualization
 ----------------
-There is a webGL visualization of the graph in the 3DVisual folder. To use it, first run grunt build in the console, which creates a minified version of the source code for the web app. Then load index_example.html in the browser. Make sure the browser you are using supports webGL or else the app wont work.
+There is a webGL visualization of the graph in the 3DVisual folder that was adapted from [Daivid Piegza's graph visualization](https://github.com/davidpiegza/Graph-Visualization). To use it, first run grunt build in the console, which creates a minified version of the source code for the web app. Then load index_example.html in the browser. Make sure the browser you are using supports webGL or else the app wont work.
 
 Because there are many layers of nested data it can be toilsome to examine the internals of the graph for testing. The visualization provides a simple user interface for experimenting and testing that allows you to see the results of each process.
 
