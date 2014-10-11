@@ -241,7 +241,7 @@ Drawing.SimpleGraph = function(options) {
     $('.atoms').append('<p>'+text+'</p>');
     var materialFront = new THREE.MeshBasicMaterial( { color: 'Black' } );
     var textGeom = new THREE.TextGeometry( text, {
-      size: 30, height: 4, curveSegments: 3,
+      size: 36, height: 4, curveSegments: 3,
       font: "helvetiker", weight: "bold", style: "normal",
       bevelEnabled: false, material: 0
       });
@@ -251,6 +251,7 @@ Drawing.SimpleGraph = function(options) {
     textMesh.position.set( cluster.position.x*(1+rnd(0.4)), cluster.position.y*(1+rnd(0.4)), cluster.position.z*(1+rnd(0.4)) );
     textMesh.lookAt(camera.position);
     scene.add(textMesh);
+    drawEdge(cluster, textMesh, 'blue');
   }
 
   function rnd(x){
@@ -259,14 +260,14 @@ Drawing.SimpleGraph = function(options) {
   /**
    *  Create an edge object (line) and add it to the scene.
    */
-  function drawEdge(source, target) {
-      console.log(source);
-      console.log(target);
-      material = new THREE.LineBasicMaterial({ color: "red", opacity: 1, linewidth: 1.5 });
-
+  function drawEdge(source, target, color) {
+      color = color || 'red';
+      material = new THREE.LineBasicMaterial({ color: color, opacity: 1, linewidth: 1.5 });
+      var source = source.data ? source.data.draw_object.position : source.position;
+      var target = target.data ? target.data.draw_object.position : target.position;
       var tmp_geo = new THREE.Geometry();
-      tmp_geo.vertices.push(source.data.draw_object.position);
-      tmp_geo.vertices.push(target.data.draw_object.position);
+      tmp_geo.vertices.push(source);
+      tmp_geo.vertices.push(target);
 
       line = new THREE.Line( tmp_geo, material, THREE.LinePieces );
       line.scale.x = line.scale.y = line.scale.z = 1;
