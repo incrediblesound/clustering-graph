@@ -43,3 +43,6 @@ system.clusters.length //=> 1
 // subsequent atomic clusters will not be merge in unless they are connected to
 // every atom in an existing non-atomic cluster, or they become part of a triad
 ```
+3D Visualization
+----------------
+There is a webGL visualization of the graph in the 3DVisual folder. If your browser supports webGL you can simply open the index.html and play with the graph. There is an "input value" form for putting new values into the graph, and a connect form for adding an edge between two existing values. If you write two values in the connect form, separated by a space, and press "connect", an edge will be added so long as the values you write exist in the graph.
