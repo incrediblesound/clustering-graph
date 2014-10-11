@@ -1,6 +1,27 @@
 {
-  "name": "system",
+  "name": "cluster-graph",
   "private": true,
   "version": "0.0.0",
-  "dependencies": {}
+  "dependencies": {},
+  "description": "Clustering Graph ================ Clustering graph is similar to a normal graph data structure but it automatically manages highly clustered nodes. In a typical graph the fundamental unit is the node or vertex, and a cluster would simply be a subset of nodes where every node was connected to every other node in the subset.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/incrediblesound/cluster-graph.git"
+  },
+  "keywords": [
+    "graph",
+    "data",
+    "structure",
+    "clusters"
+  ],
+  "author": "James H Edwards",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/incrediblesound/cluster-graph/issues"
+  },
+  "homepage": "https://github.com/incrediblesound/cluster-graph"
 }

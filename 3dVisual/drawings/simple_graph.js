@@ -156,6 +156,7 @@ Drawing.SimpleGraph = function(options) {
     var target = string[1];
     console.log('connect string: ', string);
     graph.connect(source, target);
+    console.log(graph);
     renderGraph();
   }
 
@@ -170,9 +171,12 @@ Drawing.SimpleGraph = function(options) {
     var clusters = graph.clusters;
     for(var c = 0; c < clusters.length; c++){
       var cluster = clusters[c];
-      cluster.data = {};
+      if(!cluster.data){
+        cluster.data = {};
+      }
       drawNode(cluster, cluster.atoms.length * 100);
     }
+
     for(var k = 0; k < clusters.length; k++){
       var cluster = clusters[k];
       renderAtoms(cluster);
@@ -198,8 +202,13 @@ Drawing.SimpleGraph = function(options) {
     }
 
     var area = 5000;
+    if(!node.data.draw_object){
     draw_object.position.x = Math.floor(Math.random() * (area + area + 1) - area);
     draw_object.position.y = Math.floor(Math.random() * (area + area + 1) - area);
+    } else {
+      draw_object.position.x = node.data.draw_object.position.x
+      draw_object.position.y = node.data.draw_object.position.y
+    }
 
     if(that.layout === "3d") {
       draw_object.position.z = Math.floor(Math.random() * (area + area + 1) - area);
@@ -222,16 +231,13 @@ Drawing.SimpleGraph = function(options) {
 
   function renderEdges(clusterId, atom){
     var source = graph.findCluster(clusterId);
-    console.log('render edges atom: ', atom);
-
     for(var i = 0; i < atom.connections.length; i++){
       var edge = atom.connections[i];
       var target = graph.findCluster(edge.id);
-      //if(!edges[atom.value] && !edges[edge.value]){
+        console.log('atom in renderEdges', atom);      
         edges[atom.value] = true;
         edges[edge.value] = true;
         drawEdge(source, target);
-      //}
     }
 
   }

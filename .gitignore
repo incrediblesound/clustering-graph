@@ -1,2 +1,6 @@
 bower_components/
 bower_components/*
+node_modules/
+node_modules/*
+3dVisual/lib/cluster.min.js
+3dVisual/lib/cluster-graph.js
