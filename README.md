@@ -45,4 +45,11 @@ system.clusters.length //=> 1
 ```
 3D Visualization
 ----------------
-There is a webGL visualization of the graph in the 3DVisual folder. If your browser supports webGL you can simply open the index.html and play with the graph. There is an "input value" form for putting new values into the graph, and a connect form for adding an edge between two existing values. If you write two values in the connect form, separated by a space, and press "connect", an edge will be added so long as the values you write exist in the graph.
+There is a webGL visualization of the graph in the 3DVisual folder. To use it, first run grunt build in the console, which creates a minified version of the source code for the web app. Then load index_example.html in the browser. Make sure the browser you are using supports webGL or else the app wont work.
+
+Because there are many layers of nested data it can be toilsome to examine the internals of the graph for testing. The visualization provides a simple user interface for experimenting and testing that allows you to see the results of each process.
+
+Inserting data: enter any value into the form labeled "insert data" and click "insert".    
+Connecting data: enter two values <strong>that have already been inserted</strong> into the form labelled "connect values" and click "Connect".
+
+Each time a value is inserted or a connection is made the scene is re-rendered with the current state of the graph. Clusters are rendered as colored boxes. Atom values are rendered as text and connected to clusters with blue lines. Connections between atoms are rendered as red lines connecting the clusters where the atoms are located.
